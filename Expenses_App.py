@@ -1,5 +1,3 @@
-import streamlit as st
-
 def split_cents(total, n):
     base, extra = divmod(total, n)
     return [base + (1 if i < extra else 0) for i in range(n)]
@@ -33,5 +31,3 @@ def settlement(balances):
 
 def money(cents):
     return f"${abs(cents) / 100:.2f}"
-
-
