@@ -31,4 +31,7 @@ def settlement(balances):
             del creditors[c]
     return payments
 
+def money(cents):
+    return f"${abs(cents) / 100:.2f}"
+
 
