@@ -8,8 +8,8 @@ def balance(expenses, income):
     for e in income:
         balances[e['person']] += e['amount']
         shares = split_cents(e['amount'], len(e['expenses']))
-        for person in e['expenses']:
-            balances[person] -= shares
+        for person, share in zip(e['expenses'], shares):
+            balances[person] -= share
     return balances
 
 
@@ -20,8 +20,8 @@ def settlement(balances):
     while debtors and creditors:
         d = max(debtors, key=debtors.get)
         c = max(creditors, key=creditors.get)
-        amount = min((d, c, amount))
-        debtors[d] -= amount
+        amount = min(debtors[d], creditors[c])
+        payments.append((d, c, amount))
         creditors[c] -= amount
         if debtors[d] == 0:
             del debtors[d]
