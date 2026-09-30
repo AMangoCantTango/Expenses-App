@@ -6,8 +6,8 @@ stream.set_page_config(page_title="MoneySplit")
 stream.title("MoneySplit")
 
 if "people" not in stream.session_state:
-    stream.session_state["people"] = []
-    stream.session_state["expenses"] = []
+    stream.session_state.people = []
+    stream.session_state.expenses = []
 
 people = stream.session_state.people
 expenses = stream.session_state.expenses
