@@ -37,7 +37,7 @@ else:
             if not description.strip() or cents <= 0 or not among:
                 stream.error("Please fill in all fields correctly.")
             else:
-                expenses.append((description, amount, payer, among))
+                expenses.append({"description": description, "person": payer, "amount": cents, "expenses": among})
                 stream.rerun()
 
 stream.header("3. Expenses")
@@ -45,7 +45,7 @@ if not expenses:
     stream.caption("No expenses have been added.")
 for i, e in enumerate(expenses):
     left, right = stream.columns([5, 1])
-    left.write(f"**{e[0]}**: ${e[1]:.2f} (Paid by {e[2]})")
+    left.write(f"**{e['description']}**: {money(e['amount'])} (Paid by {e['person']})")
     if right.button ("Delete", key=f"delete_{i}"):
         expenses.pop(i)
         stream.rerun()
@@ -58,18 +58,18 @@ if people:
     for person in people:
         c = balances[person]
         if c > 0:
-            stream.write(f"**{person}** is owed ${money(c):.2f}")
+            stream.write(f"**{person}** is owed {money(c)}")
         elif c < 0:
-            stream.write(f"**{person}** owes ${money(c):.2f}")
+            stream.write(f"**{person}** owes {money(c)}")
         else:
             stream.write(f"**{person}** has no balance.")
 
     stream.header("Who pays who")
-    payments = settlement(balance)
+    payments = settlement(balances)
     if not payments:
         stream.success("Everyone is even!")
     for payer, payee, amount in payments:
-        stream.write(f"**{payer}** pays **{payee}** ${money(amount):.2f}")
+        stream.write(f"**{payer}** pays **{payee}** {money(amount)}")
 
 if stream.button("Reset Group"):
     stream.session_state["people"] = []
